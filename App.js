@@ -6,6 +6,12 @@ export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
 
+  useEffect(() => {
+    if (!permission || !permission.granted) {
+      requestPermission();
+    }
+  }, [permission]);
+
   if (permission?.status === null)
     return (
       <View>
@@ -13,18 +19,12 @@ export default function App() {
       </View>
     );
 
-  if (permission?.status === false)
+  if (permission?.granted === false)
     return (
       <View>
-        <Text>Don't have camera permission :(</Text>
+        <Text>Don't have camera permission</Text>
       </View>
     );
-
-  useEffect(() => {
-    if (!permission) {
-      requestPermission();
-    }
-  }, [permission]);
 
   return (
     <View style={styles.container}>
@@ -52,7 +52,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
