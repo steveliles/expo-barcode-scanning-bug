@@ -32,9 +32,6 @@ export default function App() {
         style={StyleSheet.absoluteFillObject}
         barcodeScannerSettings={{
           barCodeTypes: ["ean13"],
-          isGuidanceEnabled: true,
-          isHighlightingEnabled: true,
-          isPinchToZoomEnabled: true,
         }}
         onBarcodeScanned={scanned ? undefined : setScanned}
       ></CameraView>
