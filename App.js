@@ -7,6 +7,27 @@ export default function App() {
   const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
+    if (scanned?.data) {
+      console.log(JSON.stringify(scanned, null, 2));
+
+      const data = scanned.data;
+      const data_cleaned = removeInvisibleChars(data);
+
+      console.log({
+        data,
+        length: data.length,
+        first: data.slice(0, 1),
+      });
+
+      console.log({
+        data_cleaned,
+        length: data_cleaned.length,
+        first: data_cleaned.slice(0, 1),
+      });
+    }
+  }, [scanned]);
+
+  useEffect(() => {
     if (!permission || !permission.granted) {
       requestPermission();
     }
@@ -31,7 +52,7 @@ export default function App() {
       <CameraView
         style={StyleSheet.absoluteFillObject}
         barcodeScannerSettings={{
-          barCodeTypes: ["ean13"],
+          barCodeTypes: ["datamatrix"],
         }}
         onBarcodeScanned={scanned ? undefined : setScanned}
       ></CameraView>
@@ -64,3 +85,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
+
+function removeInvisibleChars(data) {
+  return data.replace(/\u001D/g, "");
+}
